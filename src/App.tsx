@@ -10,10 +10,14 @@ const accessToken = import.meta.env.VITE_TMDB_API_ACCESS_TOKEN;
 
 function App() {
   const [query, setQuery] = useState("");
-  const [results, setResults] = useState(() => {
+  const [results, setResults] = useState([]);
+
+  useEffect(() => {
     const data = window.localStorage.getItem("MOVIE_SEARCH_RESULTS");
-    return data ? JSON.parse(data) : [];
-  });
+    if (data) {
+      setResults(JSON.parse(data));
+    }
+  }, []);
 
   useEffect(() => {
     window.localStorage.setItem(
@@ -40,10 +44,9 @@ function App() {
     try {
       const response = await fetch(url, options);
       const data = await response.json();
-      setResults(data.results || []);
-      console.log(data);
-    } catch (error) {
-      console.error("Fetch error:", error);
+      setResults(data.results);
+    } catch (e) {
+      console.log(`error while fetching data: ${e}`);
     }
   };
 
