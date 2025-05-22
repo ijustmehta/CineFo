@@ -3,14 +3,24 @@ import CssBaseline from "@mui/material/CssBaseline";
 import SearchBox from "./components/SearchBox";
 import Header from "./components/Header";
 import Results from "./components/Results";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import theme from "./utils/theme";
 
 const accessToken = import.meta.env.VITE_TMDB_API_ACCESS_TOKEN;
 
 function App() {
   const [query, setQuery] = useState("");
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState(() => {
+    const data = window.localStorage.getItem("MOVIE_SEARCH_RESULTS");
+    return data ? JSON.parse(data) : [];
+  });
+
+  useEffect(() => {
+    window.localStorage.setItem(
+      "MOVIE_SEARCH_RESULTS",
+      JSON.stringify(results)
+    );
+  }, [results]);
 
   const handleSearchInput = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
