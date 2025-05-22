@@ -13,16 +13,17 @@ function App() {
   const [results, setResults] = useState([]);
 
   useEffect(() => {
-    const data = window.localStorage.getItem("MOVIE_SEARCH_RESULTS");
+    const data = window.localStorage.getItem("MOVIE_SEARCH_QUERY");
     if (data) {
-      setResults(JSON.parse(data));
+      setQuery(JSON.parse(data));
+      fetchMovieData(data);
     }
   }, []);
 
   useEffect(() => {
     window.localStorage.setItem(
-      "MOVIE_SEARCH_RESULTS",
-      JSON.stringify(results)
+      "MOVIE_SEARCH_QUERY",
+      JSON.stringify(query)
     );
   }, [results]);
 
@@ -32,8 +33,8 @@ function App() {
     setQuery(event.target.value);
   };
 
-  const fetchMovieData = async () => {
-    const url = `https://api.themoviedb.org/3/search/movie?include_adult=false&language=en-US&page=1&query=${query}`;
+  const fetchMovieData = async (queryText: string) => {
+    const url = `https://api.themoviedb.org/3/search/movie?include_adult=false&language=en-US&page=1&query=${queryText}`;
     const options = {
       method: "GET",
       headers: {
@@ -55,10 +56,10 @@ function App() {
       <CssBaseline />
       <Header />
       <SearchBox
-        onClick={fetchMovieData}
+        onClick={() => fetchMovieData(query)}
         query={query}
         handleSearchInput={handleSearchInput}
-        fetchMovieData={fetchMovieData}
+        fetchMovieData={()=>fetchMovieData(query)}
       />
       <Results data={results} />
     </ThemeProvider>
