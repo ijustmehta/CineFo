@@ -15,17 +15,10 @@ function App() {
   useEffect(() => {
     const data = window.localStorage.getItem("MOVIE_SEARCH_QUERY");
     if (data) {
+      fetchMovieData(JSON.parse(data));
       setQuery(JSON.parse(data));
-      fetchMovieData(data);
     }
   }, []);
-
-  useEffect(() => {
-    window.localStorage.setItem(
-      "MOVIE_SEARCH_QUERY",
-      JSON.stringify(query)
-    );
-  }, [results]);
 
   const handleSearchInput = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -49,6 +42,7 @@ function App() {
     } catch (e) {
       console.log(`error while fetching data: ${e}`);
     }
+    window.localStorage.setItem("MOVIE_SEARCH_QUERY", JSON.stringify(queryText));
   };
 
   return (
@@ -59,7 +53,7 @@ function App() {
         onClick={() => fetchMovieData(query)}
         query={query}
         handleSearchInput={handleSearchInput}
-        fetchMovieData={()=>fetchMovieData(query)}
+        fetchMovieData={() => fetchMovieData(query)}
       />
       <Results data={results} />
     </ThemeProvider>

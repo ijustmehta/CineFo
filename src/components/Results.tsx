@@ -13,18 +13,17 @@ export default function Results({ data }: ResultsProps) {
           res.backdrop_path &&
           res.overview && (
             <Card
-              style={{ backgroundColor: "#1e1e2e" }}
               key={res.id}
               sx={{
                 maxWidth: 300,
                 borderRadius: 2,
+                backgroundColor: "#1e1e2e"
               }}
-              className=""
             >
               <CardMedia
                 component="img"
                 image={`${baseImageUrl}${res.backdrop_path}`}
-                sx={{ height: 150, objectFit: "cover", width: "100%" }}
+                sx={{ height: 150, width: "100%" }}
               />
               <CardContent>
                 <Typography variant="h5">{res.title}</Typography>

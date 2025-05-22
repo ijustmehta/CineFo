@@ -7,6 +7,7 @@ export default function SearchBox({
   query,
   fetchMovieData,
 }: SearchBoxProps) {
+  
   return (
     <div className="flex justify-center pt-8 md:gap-3 gap-1 md:p-4 p-14">
       <TextField
